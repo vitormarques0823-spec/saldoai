@@ -8,6 +8,15 @@
 </head>
 <body>
 
+<script>
+    // Verificar se usuário está logado
+    const SESSAO_KEY = 'saldoai_usuario_logado';
+    const usuarioLogado = localStorage.getItem(SESSAO_KEY);
+    if (!usuarioLogado) {
+        window.location.href = 'login.html';
+    }
+</script>
+
 <div class="aplicativo">
     <!-- TOPO COM 3 COLUNAS -->
     <div class="topo-resumo">
