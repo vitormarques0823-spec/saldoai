@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SaldoAI - Assistente Financeiro Guiado</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="aplicativo">
+    <!-- TOPO COM 3 COLUNAS -->
+    <div class="topo-resumo">
+        <div class="card-resumo-topo">
+            <div class="rotulo-resumo-topo">💰 Saldo atual</div>
+            <div class="valor-resumo-topo valor-saldo" id="saldoDinheiro">R$ 0,00</div>
+        </div>
+        <div class="card-resumo-topo">
+            <div class="rotulo-resumo-topo">📈 Total de Entradas</div>
+            <div class="valor-resumo-topo valor-entradas" id="totalEntradas">R$ 0,00</div>
+        </div>
+        <div class="card-resumo-topo">
+            <div class="rotulo-resumo-topo">📉 Total de Saídas</div>
+            <div class="valor-resumo-topo valor-saidas" id="totalSaidas">R$ 0,00</div>
+        </div>
+    </div>
+
+    <div class="conteudo-duas-colunas">
+        <!-- COLUNA DO CHAT -->
+        <div class="coluna-chat">
+            <div class="area-chat" id="chatContainer">
+                <div class="mensagem-sistema">
+                    <div class="card-sistema">
+                        ✨ <strong>SaldoAI - Modo Guiado</strong><br>
+                        Clique no botão abaixo para registrar uma nova movimentação.
+                    </div>
+                </div>
+            </div>
+            <div class="area-envio">
+                <button id="btnNovaTransacao" class="botao-nova-transacao">➕ Nova Movimentação</button>
+                <button id="btnZerarTudo" class="botao-zerar-tudo">🗑️ Zerar Tudo</button>
+                <div class="indicador-guiado">🔍 Modo Guiado Ativo</div>
+            </div>
+        </div>
+
+        <!-- COLUNA DA LISTA -->
+        <div class="coluna-lista">
+            <div class="titulo-lista">📋 Últimas movimentações</div>
+            <div class="lista-transacoes" id="listaTransacoes">
+                <div class="sem-transacoes">Nenhuma transação registrada.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
