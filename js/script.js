@@ -233,6 +233,15 @@ function mostrarEtapa() {
     }
 }
 
+// Botão SAIR
+const btnSair = document.getElementById('btnSair');
+if (btnSair) {
+    btnSair.onclick = () => {
+        localStorage.removeItem('saldoai_usuario_logado');
+        window.location.href = 'login.html';
+    };
+}
+
 function iniciarFluxo() {
     if (fluxoAtivo) { adicionarMensagem('⚠️ Já existe uma movimentação em andamento.'); return; }
     fluxoAtivo = true;

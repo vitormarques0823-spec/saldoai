@@ -9,7 +9,7 @@
 <body>
 
 <script>
-    // Verificar se usuário está logado
+    // VERIFICAR SE USUÁRIO ESTÁ LOGADO
     const SESSAO_KEY = 'saldoai_usuario_logado';
     const usuarioLogado = localStorage.getItem(SESSAO_KEY);
     if (!usuarioLogado) {
@@ -18,7 +18,6 @@
 </script>
 
 <div class="aplicativo">
-    <!-- TOPO COM 3 COLUNAS -->
     <div class="topo-resumo">
         <div class="card-resumo-topo">
             <div class="rotulo-resumo-topo">💰 Saldo atual</div>
@@ -35,7 +34,6 @@
     </div>
 
     <div class="conteudo-duas-colunas">
-        <!-- COLUNA DO CHAT -->
         <div class="coluna-chat">
             <div class="area-chat" id="chatContainer">
                 <div class="mensagem-sistema">
@@ -48,11 +46,11 @@
             <div class="area-envio">
                 <button id="btnNovaTransacao" class="botao-nova-transacao">➕ Nova Movimentação</button>
                 <button id="btnZerarTudo" class="botao-zerar-tudo">🗑️ Zerar Tudo</button>
+                <button id="btnSair" class="botao-sair">🚪 Sair</button>
                 <div class="indicador-guiado">🔍 Modo Guiado Ativo</div>
             </div>
         </div>
 
-        <!-- COLUNA DA LISTA -->
         <div class="coluna-lista">
             <div class="titulo-lista">📋 Últimas movimentações</div>
             <div class="lista-transacoes" id="listaTransacoes">

@@ -3,40 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SaldoAI - Login</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>SaldoAI - Acessar</title>
     <style>
-        .login-container {
-            max-width: 400px;
-            width: 90%;
-            margin: 0 auto;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #0F172A;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+        }
+        .card {
             background-color: #1E293B;
             border-radius: 32px;
             padding: 40px 30px;
             text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
-        .login-container h1 {
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+        h1 {
             color: #3B82F6;
             margin-bottom: 30px;
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
-        .login-input {
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            color: #94A3B8;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        input {
             background-color: #0F172A;
             border: 1px solid #3B82F6;
             color: white;
             padding: 14px 18px;
             border-radius: 40px;
             width: 100%;
-            margin-bottom: 16px;
             font-size: 1rem;
             outline: none;
         }
-        .login-input:focus {
+        input:focus {
             border-color: #60A5FA;
             box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
         }
-        .login-btn {
-            background-color: #3B82F6;
+        .btn {
             border: none;
             color: white;
             font-weight: 600;
@@ -47,49 +74,71 @@
             font-size: 1rem;
             margin-top: 10px;
         }
-        .login-btn:hover {
+        .btn-primary {
+            background-color: #3B82F6;
+        }
+        .btn-primary:hover {
             background-color: #2563EB;
         }
-        .toggle-btn {
-            background: none;
-            border: none;
+        .btn-secondary {
+            background-color: #22C55E;
+        }
+        .btn-secondary:hover {
+            background-color: #16A34A;
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #3B82F6;
             color: #3B82F6;
-            cursor: pointer;
-            margin-top: 20px;
-            font-size: 0.9rem;
+        }
+        .btn-outline:hover {
+            background-color: rgba(59,130,246,0.1);
         }
         .erro-msg {
             color: #EF4444;
             font-size: 0.8rem;
             margin-top: 10px;
         }
-        .logo {
-            font-size: 3rem;
-            margin-bottom: 20px;
+        .sucesso-msg {
+            color: #22C55E;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        .divider {
+            margin: 20px 0;
+            border-top: 1px solid #334155;
         }
     </style>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+<body>
 
-<div class="login-container">
-    <div class="logo">💰</div>
-    <h1>SaldoAI</h1>
-    <input type="email" id="email" class="login-input" placeholder="📧 Email" autocomplete="email">
-    <input type="password" id="password" class="login-input" placeholder="🔒 Senha" autocomplete="current-password">
-    <button id="btnEntrar" class="login-btn">🚀 Entrar</button>
-    <button id="btnCadastrar" class="login-btn" style="background-color: #22C55E; margin-top: 10px;">📝 Criar Conta</button>
-    <div id="mensagemErro" class="erro-msg"></div>
-</div>
+<div class="container" id="app"></div>
 
 <script>
-    // Chave para salvar usuários no localStorage
+    // ==================== CONFIGURAÇÃO ====================
     const USUARIOS_KEY = 'saldoai_usuarios';
     const SESSAO_KEY = 'saldoai_usuario_logado';
 
+    // Estado da tela: 'escolha', 'login', 'cadastro'
+    let telaAtual = 'escolha';
+
+    // ==================== FUNÇÕES ====================
     function mostrarErro(msg) {
-        const div = document.getElementById('mensagemErro');
-        div.innerText = msg;
-        setTimeout(() => { div.innerText = ''; }, 3000);
+        const div = document.getElementById('mensagem');
+        if (div) {
+            div.innerText = msg;
+            div.className = 'erro-msg';
+            setTimeout(() => { div.innerText = ''; }, 3000);
+        }
+    }
+
+    function mostrarSucesso(msg) {
+        const div = document.getElementById('mensagem');
+        if (div) {
+            div.innerText = msg;
+            div.className = 'sucesso-msg';
+            setTimeout(() => { div.innerText = ''; }, 3000);
+        }
     }
 
     function salvarUsuarios(usuarios) {
@@ -101,16 +150,22 @@
         return dados ? JSON.parse(dados) : [];
     }
 
-    function cadastrar(email, senha) {
+    // ==================== CADASTRO (4 CAMPOS) ====================
+    function cadastrar(nome, telefone, email, senha) {
         const usuarios = carregarUsuarios();
         
-        if (!email || !senha) {
-            mostrarErro('Preencha email e senha!');
+        if (!nome || !telefone || !email || !senha) {
+            mostrarErro('Preencha todos os campos!');
             return false;
         }
         
         if (!email.includes('@')) {
             mostrarErro('Email inválido!');
+            return false;
+        }
+        
+        if (telefone.length < 10) {
+            mostrarErro('Telefone inválido (mínimo 10 dígitos)!');
             return false;
         }
         
@@ -125,12 +180,17 @@
             return false;
         }
         
-        usuarios.push({ email, senha });
+        usuarios.push({ nome, telefone, email, senha });
         salvarUsuarios(usuarios);
-        mostrarErro('✅ Conta criada! Agora faça login.');
+        mostrarSucesso('✅ Conta criada com sucesso! Agora faça login.');
+        setTimeout(() => {
+            telaAtual = 'login';
+            renderizar();
+        }, 2000);
         return true;
     }
 
+    // ==================== LOGIN (APENAS EMAIL + SENHA) ====================
     function fazerLogin(email, senha) {
         const usuarios = carregarUsuarios();
         
@@ -142,7 +202,10 @@
         const usuario = usuarios.find(u => u.email === email && u.senha === senha);
         
         if (usuario) {
-            localStorage.setItem(SESSAO_KEY, JSON.stringify({ email: usuario.email }));
+            localStorage.setItem(SESSAO_KEY, JSON.stringify({ 
+                email: usuario.email,
+                nome: usuario.nome 
+            }));
             window.location.href = 'index.html';
             return true;
         } else {
@@ -151,25 +214,107 @@
         }
     }
 
-    document.getElementById('btnEntrar').onclick = () => {
-        const email = document.getElementById('email').value.trim();
-        const senha = document.getElementById('password').value;
-        fazerLogin(email, senha);
-    };
-    
-    document.getElementById('btnCadastrar').onclick = () => {
-        const email = document.getElementById('email').value.trim();
-        const senha = document.getElementById('password').value;
-        cadastrar(email, senha);
-    };
-    
-    document.getElementById('password').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            const email = document.getElementById('email').value.trim();
-            const senha = document.getElementById('password').value;
-            fazerLogin(email, senha);
+    // ==================== RENDERIZAR TELAS ====================
+    function renderizar() {
+        const app = document.getElementById('app');
+        
+        if (telaAtual === 'escolha') {
+            app.innerHTML = `
+                <div class="card">
+                    <div class="logo">💰</div>
+                    <h1>SaldoAI</h1>
+                    <button id="btnLogin" class="btn btn-primary">🔐 Login</button>
+                    <div class="divider"></div>
+                    <button id="btnCadastrar" class="btn btn-secondary">📝 Criar Conta</button>
+                </div>
+            `;
+            document.getElementById('btnLogin')?.addEventListener('click', () => {
+                telaAtual = 'login';
+                renderizar();
+            });
+            document.getElementById('btnCadastrar')?.addEventListener('click', () => {
+                telaAtual = 'cadastro';
+                renderizar();
+            });
         }
-    });
+        else if (telaAtual === 'login') {
+            app.innerHTML = `
+                <div class="card">
+                    <div class="logo">🔐</div>
+                    <h1>Login</h1>
+                    <div class="input-group">
+                        <label>📧 Email</label>
+                        <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+                    </div>
+                    <div class="input-group">
+                        <label>🔒 Senha</label>
+                        <input type="password" id="senha" placeholder="••••••" autocomplete="current-password">
+                    </div>
+                    <button id="btnEntrar" class="btn btn-primary">🚀 Entrar</button>
+                    <div class="divider"></div>
+                    <button id="btnVoltar" class="btn btn-outline">◀ Voltar</button>
+                    <div id="mensagem"></div>
+                </div>
+            `;
+            document.getElementById('btnEntrar')?.addEventListener('click', () => {
+                const email = document.getElementById('email').value.trim();
+                const senha = document.getElementById('senha').value;
+                fazerLogin(email, senha);
+            });
+            document.getElementById('btnVoltar')?.addEventListener('click', () => {
+                telaAtual = 'escolha';
+                renderizar();
+            });
+            document.getElementById('senha')?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const email = document.getElementById('email').value.trim();
+                    const senha = document.getElementById('senha').value;
+                    fazerLogin(email, senha);
+                }
+            });
+        }
+        else if (telaAtual === 'cadastro') {
+            app.innerHTML = `
+                <div class="card">
+                    <div class="logo">📝</div>
+                    <h1>Criar Conta</h1>
+                    <div class="input-group">
+                        <label>👤 Nome completo</label>
+                        <input type="text" id="nome" placeholder="Seu nome">
+                    </div>
+                    <div class="input-group">
+                        <label>📱 Telefone</label>
+                        <input type="tel" id="telefone" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="input-group">
+                        <label>📧 Email</label>
+                        <input type="email" id="email" placeholder="seu@email.com">
+                    </div>
+                    <div class="input-group">
+                        <label>🔒 Senha</label>
+                        <input type="password" id="senha" placeholder="Mínimo 4 caracteres">
+                    </div>
+                    <button id="btnEnviar" class="btn btn-secondary">✅ Enviar</button>
+                    <div class="divider"></div>
+                    <button id="btnVoltar" class="btn btn-outline">◀ Voltar</button>
+                    <div id="mensagem"></div>
+                </div>
+            `;
+            document.getElementById('btnEnviar')?.addEventListener('click', () => {
+                const nome = document.getElementById('nome').value.trim();
+                const telefone = document.getElementById('telefone').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const senha = document.getElementById('senha').value;
+                cadastrar(nome, telefone, email, senha);
+            });
+            document.getElementById('btnVoltar')?.addEventListener('click', () => {
+                telaAtual = 'escolha';
+                renderizar();
+            });
+        }
+    }
+
+    renderizar();
 </script>
 </body>
 </html>
