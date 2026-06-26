@@ -47,6 +47,18 @@
                 <button id="btnNovaTransacao" class="botao-nova-transacao">➕ Nova Movimentação</button>
                 <button id="btnZerarTudo" class="botao-zerar-tudo">🗑️ Zerar Tudo</button>
                 <button id="btnSair" class="botao-sair">🚪 Sair</button>
+                
+                <!-- CHAT DA IA -->
+                <div class="chat-ia-container">
+                    <div style="font-size: 0.7rem; color: #94A3B8; margin-bottom: 4px;">🤖 Pergunte sobre seus gastos</div>
+                    <div class="form-mensagem-ia">
+                        <input type="text" id="inputIA" class="campo-texto-ia" placeholder="Ex: Quanto gastei com gasolina?" style="flex:1; background:transparent; border:none; color:white; padding:6px 10px; outline:none; font-size:0.8rem;">
+                        <button id="btnEnviarIA" class="botao-ia botao-enviar-ia">Enviar</button>
+                        <button id="btnLimparChatIA" class="botao-ia botao-limpar-ia">Limpar</button>
+                    </div>
+                    <div id="respostasIA" style="margin-top: 4px; max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;"></div>
+                </div>
+                
                 <div class="indicador-guiado">🔍 Modo Guiado Ativo</div>
             </div>
         </div>
